@@ -29,6 +29,19 @@ public class Plot extends ApplicationFrame {
      */
 	final CombinedDomainXYPlot plot;
 	String title = "";
+
+	
+	public Plot() {
+
+//        super(title);
+//        this.title = title;
+		super("");
+        plot = new CombinedDomainXYPlot(new NumberAxis("Domain"));
+        
+
+    }
+
+
     public Plot(String title) {
 
         super(title);
@@ -75,49 +88,6 @@ public class Plot extends ApplicationFrame {
      *
      * @return Series 1.
      */
-    private XYDataset createDataset1() {
-
-        // create dataset 1...
-        final XYSeries series1 = new XYSeries("Series 1a");
-        series1.add(10.0, 12353.3);
-        series1.add(20.0, 13734.4);
-        series1.add(30.0, 14525.3);
-        series1.add(40.0, 13984.3);
-        series1.add(50.0, 12999.4);
-        series1.add(60.0, 14274.3);
-        series1.add(70.0, 15943.5);
-        series1.add(80.0, 14845.3);
-        series1.add(90.0, 14645.4);
-        series1.add(100.0, 16234.6);
-        series1.add(110.0, 17232.3);
-        series1.add(120.0, 14232.2);
-        series1.add(130.0, 13102.2);
-        series1.add(140.0, 14230.2);
-        series1.add(150.0, 11235.2);
-
-//        final XYSeries series1b = new XYSeries("Series 1b");
-//        series1b.add(10.0, 15000.3);
-//        series1b.add(20.0, 11000.4);
-//        series1b.add(30.0, 17000.3);
-//        series1b.add(40.0, 15000.3);
-//        series1b.add(50.0, 14000.4);
-//        series1b.add(60.0, 12000.3);
-//        series1b.add(70.0, 11000.5);
-//        series1b.add(80.0, 12000.3);
-//        series1b.add(90.0, 13000.4);
-//        series1b.add(100.0, 12000.6);
-//        series1b.add(110.0, 13000.3);
-//        series1b.add(120.0, 17000.2);
-//        series1b.add(130.0, 18000.2);
-//        series1b.add(140.0, 16000.2);
-//        series1b.add(150.0, 17000.2);
-
-        final XYSeriesCollection collection = new XYSeriesCollection();
-        collection.addSeries(series1);
-//        collection.addSeries(series1b);
-        return collection;
-
-    }
     private XYDataset createDataset(float[]values,String name) {
 
         // create dataset 1...
