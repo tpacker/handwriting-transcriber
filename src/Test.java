@@ -1,3 +1,4 @@
+import utilities.DFT;
 import jigl.image.GrayImage;
 
 public class Test {

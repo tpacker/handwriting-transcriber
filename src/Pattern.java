@@ -1,10 +1,10 @@
-
-
 import java.util.ArrayList;
 
 import com.sun.xml.internal.fastinfoset.sax.Features;
 
 import jigl.image.GrayImage;
+
+
 
 public class Pattern {
 
@@ -12,9 +12,9 @@ public class Pattern {
 	
 	public ArrayList<Feature> features;
 	public String name;
-	public int classId =-1;
-	public int indexClosestPrototype =-1; 
-	public float dstClosestPrototype =0; 
+	public int classId = -1;
+	public int indexClosestPrototype = -1; 
+	public float dstClosestPrototype = 0; 
 
 	public Pattern() {
 		
