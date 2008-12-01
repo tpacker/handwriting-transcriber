@@ -33,8 +33,18 @@ public class PatternRecognition {
 //		System.out.println("hello world");
 //		Test.ReadInFile();
 		Test.PlotProfile();
+//		Test.DFTProfile();
 	}
 	
+	
+	public static void print(double[] array){
+		for(int i =0;i<array.length;i++){
+//			Pattern pattern = ((Pattern) array[i]);
+			System.out.println(array[i]+" ");
+//			pattern.print();
+		}
+	}
+
 	
 	
 	public static void printPatterns(ArrayList patterns){
@@ -46,8 +56,8 @@ public class PatternRecognition {
 	}
 
 	
-	public static float[] reverseProfile(float[] profile) {
-		float[] tempSignature = new float[profile.length];
+	public static double[] reverseProfile(double[] profile) {
+		double[] tempSignature = new double[profile.length];
 		
 		for(int i=0,j=profile.length-1;i<tempSignature.length;i++,j--){
 			tempSignature[i]= profile[j];
@@ -72,7 +82,7 @@ public class PatternRecognition {
 			}
 		}
 
-		profile = fixProfile(profile);
+//		profile = fixProfile(profile);
 
 //		profile = scaleDownProfile(length, profile);
 		return profile;
@@ -96,7 +106,7 @@ public class PatternRecognition {
 			}
 		}
 
-		profile = fixProfile(profile);
+//		profile = fixProfile(profile);
 
 //		profile = scaleDownProfile(length, profile);
 		profile = ImageProcessing.reverseProfile(profile);
@@ -128,29 +138,29 @@ public class PatternRecognition {
 		return new BoundingBox(minX, maxX, minY, maxY);
 	}
 	
-	public static float[] fixProfile(float[] profile) {
-		ArrayList<Float> tempprofile = new ArrayList<Float>();
-		int threshold = 5;
-		for(int i =0;i<profile.length;i++)
-		{
-			if(profile[i]>threshold){
-				tempprofile.add(profile[i]);
-			}
-		}
-		
-		float[] newprofile = convertObjectArray2Primitives(tempprofile);
-		return newprofile;
-	}
-	public static float[] convertObjectArray2Primitives(ArrayList<Float> array) {
-		float[] newarray = new float[array.size()];
-		for(int i=0;i<array.size();i++){
-			Float f = array.get(i);
-			newarray[i] = f.floatValue();
-		}
-	
-		return newarray;
-
-	}
+//	public static double[] fixProfile(double[] profile) {
+//		ArrayList<Double> tempprofile = new ArrayList<Double>();
+//		int threshold = 5;
+//		for(int i =0;i<profile.length;i++)
+//		{
+//			if(profile[i]>threshold){
+//				tempprofile.add(profile[i]);
+//			}
+//		}
+//		
+//		double[] newprofile = convertObjectArray2Primitives(tempprofile);
+//		return newprofile;
+//	}
+//	public static float[] convertObjectArray2Primitives(ArrayList<Float> array) {
+//		float[] newarray = new float[array.size()];
+//		for(int i=0;i<array.size();i++){
+//			Float f = array.get(i);
+//			newarray[i] = f.floatValue();
+//		}
+//	
+//		return newarray;
+//
+//	}
 	
 
 	public static float getXcount(GrayImage image, int classId) {
