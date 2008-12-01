@@ -11,21 +11,20 @@ public class RecordRow
 	private ArrayList<RecordCell> cells = new ArrayList<RecordCell>();
 	
 	
-
-	public RecordRow()
+	
+	/**
+	 * Constructor.  Create 3 cells.
+	 */
+	public RecordRow(String fileNameBase)
 	{
 		for (int cellPos = 0; cellPos < rowLength; cellPos++)
 		{
 			cells.add(new RecordCell());
 		}
-	}
-	
-	
-	public void readImage(String fileNameBase)
-	{
-		for (RecordCell cell : cells)
+		
+		for (int cellPos = 0; cellPos < rowLength; cellPos++)
 		{
-			cell.MakeFeatures();
+			cells.get(cellPos).readImage(fileNameBase + cellPos + ".pgm");
 		}
 	}
 	
