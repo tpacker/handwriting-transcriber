@@ -21,11 +21,11 @@ public class TrainAndTest
 		
 		// Split into train and test sets.
 		
-		// Compute state transition probabilities.
 	}
 	
-	private static void traing()
+	private static void train()
 	{
+		// Compute state transition probabilities.
 		
 	}
 	
