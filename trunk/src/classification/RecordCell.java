@@ -13,7 +13,7 @@ public class RecordCell
 {
 	private GrayImage image;
 	private String transcription;
-	private ArrayList<Double> features = new ArrayList();
+	private ArrayList<Double> features = new ArrayList<Double>();
 
 	
 	
@@ -41,9 +41,11 @@ public class RecordCell
 	}
 	
 	
+	/**
+	 * Run through the individual features, extract one feature each.
+	 */
 	public void MakeFeatures()
 	{
-		// Run through the individual features, extract one feature each.
 		MakeWidthFeature();
 		MakeProfileFeature("TopProfile");
 	}
