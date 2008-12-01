@@ -19,13 +19,13 @@ public class ImageProcessing {
 	public static void main(String[] args) {
 	}
 
-	static float[] getXProfile(GrayImage image, int classId) {
+	static double[] getXProfile(GrayImage image, int classId) {
 		
 		BoundingBox boundingBox = PatternRecognition.getBoundingBox(image, classId);
 		short[][] pixels = image.getData();
 		int lengthOfProfile = boundingBox.maxX - boundingBox.minX;
 
-		float profile[] = new float[lengthOfProfile + 1];
+		double profile[] = new double[lengthOfProfile + 1];
 
 		for (int i = boundingBox.minY; i < boundingBox.maxY + 1; i++) {
 			for (int j = boundingBox.minX, bucket = 0; j < boundingBox.maxX + 1; j++,bucket++) {
@@ -35,19 +35,19 @@ public class ImageProcessing {
 			}
 		}
 
-		profile = PatternRecognition.fixProfile(profile);
+//		profile = PatternRecognition.fixProfile(profile);
 
 		return profile;
 		
 	}
 	
-	static float[] getYProfile(GrayImage image, int classId) {
+	static double[] getYProfile(GrayImage image, int classId) {
 		
 		BoundingBox boundingBox = PatternRecognition.getBoundingBox(image, classId);
 		short[][] pixels = image.getData();
 		int lengthOfProfile = boundingBox.maxY - boundingBox.minY;
 
-		float profile[] = new float[lengthOfProfile + 1];
+		double profile[] = new double[lengthOfProfile + 1];
 
 		for (int i = boundingBox.minY,bucket = 0; i < boundingBox.maxY + 1; i++,bucket++) {
 			for (int j = boundingBox.minX ; j < boundingBox.maxX + 1; j++) {
@@ -57,7 +57,7 @@ public class ImageProcessing {
 			}
 		}
 
-		profile = PatternRecognition.fixProfile(profile);
+//		profile = PatternRecognition.fixProfile(profile);
 
 		profile = PatternRecognition.reverseProfile(profile);
 		return profile;

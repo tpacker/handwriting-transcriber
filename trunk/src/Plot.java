@@ -56,7 +56,7 @@ public class Plot extends ApplicationFrame {
      *
      * @return The combined chart.
      */
-    public void setSubplot(float[]profile,String name){
+    public void setSubplot(double[]profile,String name){
     	XYDataset data1= createDataset(profile,name);
     	 final XYItemRenderer renderer1 = new StandardXYItemRenderer();
          final NumberAxis rangeAxis1 = new NumberAxis(name);
@@ -88,7 +88,7 @@ public class Plot extends ApplicationFrame {
      *
      * @return Series 1.
      */
-    private XYDataset createDataset(float[]values,String name) {
+    private XYDataset createDataset(double[]values,String name) {
 
         // create dataset 1...
         final XYSeries series = new XYSeries(name);
