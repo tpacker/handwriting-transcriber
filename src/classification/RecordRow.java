@@ -7,8 +7,36 @@ import java.util.ArrayList;
 
 public class RecordRow
 {
-	private final int rowLength = 3;
-	private ArrayList<RecordCell> cells = new ArrayList<RecordCell>();
+	public static final int rowLength = 3;
+	
+	
+	private String imageName;
+	private ArrayList<RecordCell> cells = new ArrayList<RecordCell>(rowLength);
+	
+	
+
+	public void setImageName(String imageName)
+	{
+		this.imageName = imageName;
+	}
+
+
+	public String getImageName()
+	{
+		return imageName;
+	}
+	
+
+	public void setCells(ArrayList<RecordCell> cells)
+	{
+		this.cells = cells;
+	}
+
+
+	public ArrayList<RecordCell> getCells()
+	{
+		return cells;
+	}
 	
 	
 	
@@ -17,23 +45,28 @@ public class RecordRow
 	 */
 	public RecordRow(String fileNameBase)
 	{
+		setImageName(fileNameBase.substring(fileNameBase.lastIndexOf('\\') + 1, fileNameBase.indexOf('_', fileNameBase.lastIndexOf('\\'))));
+		
 		for (int cellPos = 0; cellPos < rowLength; cellPos++)
 		{
-			cells.add(new RecordCell());
+			getCells().add(new RecordCell());
 		}
 		
 		for (int cellPos = 0; cellPos < rowLength; cellPos++)
 		{
-			cells.get(cellPos).readImage(fileNameBase + cellPos + ".pgm");
+			getCells().get(cellPos).readImage(fileNameBase + cellPos + ".pgm");
 		}
 	}
 	
 	
-	public void MakeFeatures()
+	public void setTranscription(String line)
 	{
-		for (RecordCell cell : cells)
+		String[] cellTranscriptions = line.split("\t");
+
+		for (int cellPos1 = 0; cellPos1 < RecordRow.rowLength; cellPos1++)
 		{
-			cell.MakeFeatures();
+			getCells().get(cellPos1).setTranscription(cellTranscriptions[cellPos1 + 1]);
 		}
 	}
+
 }
