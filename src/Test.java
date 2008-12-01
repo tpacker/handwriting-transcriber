@@ -1,4 +1,6 @@
+
 import utilities.DFT;
+import utilities.Plot;
 import jigl.image.GrayImage;
 
 public class Test {
