@@ -1,4 +1,4 @@
-image1
+*	image1
 
 1	head	m	s
 2	servant	f	d
@@ -44,7 +44,7 @@ image1
 42	son	m	s
 43	head	m	m
 
-image2
+*	image2
 
 51	son	m	s
 52	son	m	s
@@ -85,7 +85,7 @@ image2
 87	head	m	m
 88	wife	f	m
 
-image3
+*	image3
 
 1	head	m	s
 2	boarder	m	s
