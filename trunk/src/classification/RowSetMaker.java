@@ -15,7 +15,6 @@ public class RowSetMaker
 		ArrayList<RecordRow> rowSet = new ArrayList<RecordRow>();
 		
 		// Read in extracted rectangles.
-		//GrayImage inputImage = File.openGrayImage(inputPath + "things.pgm");
 		
 		// Read in transcriptions.
 		

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import jigl.image.GrayImage;
 
+import utilities.File;
+
 
 
 public class RecordCell
@@ -14,16 +16,23 @@ public class RecordCell
 	private ArrayList<Double> features = new ArrayList();
 
 	
-	public void setImage(GrayImage image)
+	
+	public void readImage(String fileName)
 	{
-		this.image = image;
+		image = File.openGrayImage(fileName);
+	}
+	
+
+	private void setTranscription(String transcription)
+	{
+		this.transcription = transcription;
 	}
 
-	
-	public GrayImage getImage()
+
+	private String getTranscription()
 	{
-		return image;
-	}
+		return transcription;
+	}	
 	
 	
 	public void addFeature(double featureValue)
