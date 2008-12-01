@@ -11,6 +11,7 @@ import utilities.File;
 
 public class RecordCell
 {
+	private String fileName;
 	private GrayImage image;
 	private String transcription;
 	private ArrayList<Double> features = new ArrayList<Double>();
@@ -19,17 +20,19 @@ public class RecordCell
 	
 	public void readImage(String fileName)
 	{
+		this.fileName = fileName;
 		image = File.openGrayImage(fileName);
+		MakeFeatures();
 	}
 	
 
-	private void setTranscription(String transcription)
+	public void setTranscription(String transcription)
 	{
 		this.transcription = transcription;
 	}
 
-
-	private String getTranscription()
+	
+	public String getTranscription()
 	{
 		return transcription;
 	}	
@@ -44,7 +47,7 @@ public class RecordCell
 	/**
 	 * Run through the individual features, extract one feature each.
 	 */
-	public void MakeFeatures()
+	private void MakeFeatures()
 	{
 		MakeWidthFeature();
 		MakeProfileFeature("TopProfile");

@@ -21,12 +21,12 @@ public class TrainAndTest
 		
 		// Split into train and test sets.
 		
+		System.out.println("Done.");
 	}
 	
 	private static void train()
 	{
 		// Compute state transition probabilities.
-		
 		
 		
 	}
