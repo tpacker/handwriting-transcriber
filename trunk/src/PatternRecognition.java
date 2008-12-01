@@ -10,6 +10,8 @@ import java.util.Random;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import utilities.BoundingBox;
+
 import com.sun.corba.se.impl.orbutil.DenseIntMapImpl;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.Discarder;
 

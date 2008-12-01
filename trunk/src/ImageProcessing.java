@@ -4,6 +4,8 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Stack;
 
+import utilities.BoundingBox;
+
 import jigl.gui.ImageCanvas;
 import jigl.image.BadImageException;
 import jigl.image.ColorModelNotSupportedException;

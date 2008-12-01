@@ -10,14 +10,17 @@ public class RowSetMaker
 	
 
 	
-	public static ArrayList MakeRowSet()
+	public static ArrayList<RecordRow> MakeRowSet()
 	{
+		ArrayList<RecordRow> rowSet = new ArrayList<RecordRow>();
+		
 		// Read in extracted rectangles.
-		GrayImage inputImage = File.openGrayImage(inputPath + "things.pgm");
+		//GrayImage inputImage = File.openGrayImage(inputPath + "things.pgm");
 		
 		// Read in transcriptions.
 		
 		// Create features.
 		
+		return rowSet;
 	}
 }
