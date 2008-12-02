@@ -1,10 +1,13 @@
 package classification;
 
 
+import imageprocessing.ImageProcessing;
+
 import java.util.ArrayList;
 
 import jigl.image.GrayImage;
 
+import utilities.DFT;
 import utilities.File;
 
 
@@ -50,7 +53,8 @@ public class RecordCell
 	private void MakeFeatures()
 	{
 		MakeWidthFeature();
-		MakeProfileFeature("TopProfile");
+		MakeUpperProfileFeature();
+		MakeProjectionProfileFeature();
 	}
 	
 	
@@ -65,13 +69,41 @@ public class RecordCell
 	}
 	
 	
-	private void MakeProfileFeature(String profileType)
+	private void MakeUpperProfileFeature()
 	{
-		// Read image from cell.
-
+		int classId = 0;
+		double[] profile = ImageProcessing.getUpperProfile(image, classId);
+		double[] cosines = DFT.cosineValues(profile);
+		double[] sines = DFT.sineValues(profile);
 		// DFT.
+		features.add(cosines[0]);
+		features.add(cosines[1]);
+		features.add(cosines[2]);
+		features.add(cosines[3]);
+		
+		features.add(sines[0]);
+		features.add(sines[1]);
+		features.add(sines[2]);
 		
 		// Insert 7 features into cell.
+		
+	}
+	private void MakeProjectionProfileFeature()
+	{
+		int classId = 0;
+		double[] profile = ImageProcessing.getXProfile(image, classId);
+		double[] cosines = DFT.cosineValues(profile);
+		double[] sines = DFT.sineValues(profile);
+		// DFT.
+		features.add(cosines[0]);
+		features.add(cosines[1]);
+		features.add(cosines[2]);
+		features.add(cosines[3]);
+		
+		features.add(sines[0]);
+		features.add(sines[1]);
+		features.add(sines[2]);
+		
 		
 	}
 }
