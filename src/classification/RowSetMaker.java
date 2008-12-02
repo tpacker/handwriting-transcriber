@@ -33,8 +33,6 @@ public class RowSetMaker
 		String[] fileList = fileView.list();
 		Map<String, String> rowFileBaseNameList = new HashMap<String, String>();
 		
-		
-		
 		for (String file : fileList)
 		{
 			if (file.substring(file.length() - 4).compareTo(".pgm") == 0)
