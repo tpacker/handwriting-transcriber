@@ -54,7 +54,7 @@ public class RecordRow
 		
 		for (int cellPos = 0; cellPos < rowLength; cellPos++)
 		{
-			getCells().get(cellPos).readImage(fileNameBase + cellPos + ".pgm");
+			getCells().get(cellPos).readImage(fileNameBase + (cellPos + 1) + ".pgm");
 		}
 	}
 	

@@ -46,27 +46,60 @@ public class RecordCell
 		features.add(featureValue);
 	}
 	
+	//iraykhel 12/02
+	public ArrayList<Double> getFeatures() {
+		return features;
+	}
+	
+	//iraykhel 12/02
+	public GrayImage getImage() {
+		return image;
+	}
+	
 	
 	/**
 	 * Run through the individual features, extract one feature each.
 	 */
 	private void MakeFeatures()
 	{
+		//MakeUpperProtrusionsFeature();
 		MakeWidthFeature();
+		MakeHeightFeature();
+		MakeAspectRatioFeature();
+		MakeAreaFeature();
+		
 		MakeUpperProfileFeature();
 		MakeProjectionProfileFeature();
 	}
 	
+	private void MakeHeightFeature()
+	{
+		this.addFeature(image.Y());
+	}
 	
 	private void MakeWidthFeature()
 	{
-		// Read image from cell.
-
-		double width = 0.0;
-		
-		// Insert this feature into cell.
-		this.addFeature(width);
+		this.addFeature(image.X());
 	}
+	
+	private void MakeAspectRatioFeature()
+	{
+		this.addFeature(((double)image.X())/((double)image.Y()));
+	}
+	
+	private void MakeAreaFeature()
+	{
+		this.addFeature(image.X()*image.Y());
+	}
+	
+	/*private void MakeUpperProtrusionsFeature() {
+		this.addFeature(ProtrusionSupport_BlackAmountPerRectangle((int)(image.Y()*0.33),(int)(image.Y()*0.67)));
+		double[] profile = ImageProcessing.getYProfile(image, 0);
+		System.out.println("Profile: ");
+		for (int i = 0; i < profile.length; i++)
+			System.out.print(profile[i] + " ");
+		System.out.print("\n");
+	}*/
 	
 	
 	private void MakeUpperProfileFeature()
