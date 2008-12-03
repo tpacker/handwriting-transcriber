@@ -53,8 +53,11 @@ public class TrainAndTest
 	{
 		ProbabilityModel probabilityModel = new ProbabilityModel();
 		
-		// Compute state transition probabilities.
-		probabilityModel.computeStateTransitionProbs(trainSet, cellStateOrder);
+		// Compute state transition probability model statistics.
+		probabilityModel.buildStateTransitionModel(trainSet, cellStateOrder);
+		
+		// Compute observation probability model.
+		probabilityModel.buildObservationModel(trainSet, cellStateOrder);
 		
 		return probabilityModel;
 	}

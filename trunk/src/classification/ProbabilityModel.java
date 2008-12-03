@@ -3,11 +3,7 @@ package classification;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-
-import utilities.DataStructures;
 
 
 
@@ -28,7 +24,7 @@ public class ProbabilityModel
 	
 	
 	
-	public void computeStateTransitionProbs(ArrayList<RecordRow> trainSet, int[] cellStateOrder)
+	public void buildStateTransitionModel(ArrayList<RecordRow> trainSet, int[] cellStateOrder)
 	{
 		int[] stateCellOrder = new int[cellStateOrder.length];
 		
@@ -87,9 +83,16 @@ public class ProbabilityModel
 					String transcription2 = cells.get(stateCellOrder[cellStateOrder[cellPos] + 1]).getTranscription();
 					int valueIndex1 = stateValues.get(cellStateOrder[cellPos]).get(transcription1);
 					int valueIndex2 = stateValues.get(cellStateOrder[cellPos] + 1).get(transcription2);
+					
 					stateTransitionStats.get(cellStateOrder[cellPos])[valueIndex1][valueIndex2]++;
 				}
 			}
 		}
 	}
+
+
+	
+	public void buildObservationModel(ArrayList<RecordRow> trainSet, int[] cellStateOrder)
+	{
+	}	
 }
