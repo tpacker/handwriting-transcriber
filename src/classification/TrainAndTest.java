@@ -61,7 +61,7 @@ public class TrainAndTest
 				ArrayList<Double> features = cell.getFeatures();
 				System.out.print(String.format("%1$15s:", cell.getTranscription()));
 				for (Double feature : features) {
-					System.out.print(String.format("%1$6.3f ", feature));
+					System.out.print(String.format("%1$9.3f ", feature));
 				}
 				System.out.print("\n");
 			}
