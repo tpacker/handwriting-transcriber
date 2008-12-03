@@ -47,12 +47,14 @@ public class RecordCell
 	}
 	
 	//iraykhel 12/02
-	public ArrayList<Double> getFeatures() {
+	public ArrayList<Double> getFeatures()
+	{
 		return features;
 	}
 	
 	//iraykhel 12/02
-	public GrayImage getImage() {
+	public GrayImage getImage()
+	{
 		return image;
 	}
 	
@@ -84,7 +86,7 @@ public class RecordCell
 	
 	private void MakeAspectRatioFeature()
 	{
-		this.addFeature(((double)image.X())/((double)image.Y()));
+		this.addFeature(((double)image.X()) / ((double)image.Y()));
 	}
 	
 	private void MakeAreaFeature()
@@ -92,7 +94,8 @@ public class RecordCell
 		this.addFeature(image.X()*image.Y());
 	}
 	
-	/*private void MakeUpperProtrusionsFeature() {
+	/*private void MakeUpperProtrusionsFeature()
+	{
 		this.addFeature(ProtrusionSupport_BlackAmountPerRectangle((int)(image.Y()*0.33),(int)(image.Y()*0.67)));
 		double[] profile = ImageProcessing.getYProfile(image, 0);
 		System.out.println("Profile: ");
@@ -119,8 +122,9 @@ public class RecordCell
 		features.add(sines[2]);
 		
 		// Insert 7 features into cell.
-		
 	}
+	
+	
 	private void MakeProjectionProfileFeature()
 	{
 		int classId = 0;
@@ -136,7 +140,5 @@ public class RecordCell
 		features.add(sines[0]);
 		features.add(sines[1]);
 		features.add(sines[2]);
-		
-		
 	}
 }
