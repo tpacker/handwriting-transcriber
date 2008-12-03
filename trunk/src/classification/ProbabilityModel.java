@@ -4,6 +4,8 @@ package classification;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 
 
@@ -62,6 +64,8 @@ public class ProbabilityModel
 			}
 		}
 		
+		//System.out.println(stateValues);
+		
 		// Create the map of state transition probabilities of the right size.
 		for (int cellPos = 0; cellPos < cellStateOrder.length; cellPos++)
 		{
@@ -85,6 +89,37 @@ public class ProbabilityModel
 					int valueIndex2 = stateValues.get(cellStateOrder[cellPos] + 1).get(transcription2);
 					
 					stateTransitionStats.get(cellStateOrder[cellPos])[valueIndex1][valueIndex2]++;
+				}
+				
+			}
+		}
+		
+		//iraykhel 12/02
+		System.out.println("State transition counts:");
+		printStateTransitionStats(cellStateOrder);
+		
+		
+		
+		
+	}
+	
+	
+	//iraykhel 12/02: cutesy print transition matrix
+	public void printStateTransitionStats(int[] cellStateOrder) {
+		for (int cellPos = 0; cellPos < cellStateOrder.length; cellPos++)
+		{
+			if (cellStateOrder[cellPos] < cellStateOrder.length - 1)
+			{
+				HashMap<String,Integer> valToIndexMap = stateValues.get(cellStateOrder[cellPos]);
+				Set<Entry<String,Integer>> vtiSet = valToIndexMap.entrySet();
+				HashMap<String,Integer> valToIndexMapNext = stateValues.get(cellStateOrder[cellPos] + 1);
+				Set<Entry<String,Integer>> vtiSetNext = valToIndexMapNext.entrySet();
+				
+				for (Entry<String,Integer> vtiEntry : vtiSet) {
+					for (Entry<String,Integer> vtiEntryNext : vtiSetNext) {
+						int count = stateTransitionStats.get(cellStateOrder[cellPos])[vtiEntry.getValue()][vtiEntryNext.getValue()];
+						System.out.println(vtiEntry.getKey() + "->" + vtiEntryNext.getKey() + ": " + count);
+					}
 				}
 			}
 		}

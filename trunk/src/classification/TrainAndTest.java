@@ -40,12 +40,32 @@ public class TrainAndTest
 		}
 		
 		// Train.
-		ProbabilityModel probabilityModel = train(trainSet);		
+		ProbabilityModel probabilityModel = train(trainSet);
+		
+		//iraykhel 12/02
+		System.out.println("Training set:");
+		printDataset(trainSet);
 		
 		// Test.
 		test(probabilityModel, testSet);		
 		
 		System.out.println("Done.");
+	}
+	
+	
+	//iraykhel 12/02 cutesy print dataset
+	private static void printDataset(ArrayList<RecordRow> dataSet) {
+		for (RecordRow row : dataSet) {
+			ArrayList<RecordCell> cells = row.getCells();
+			for (RecordCell cell : cells) {
+				ArrayList<Double> features = cell.getFeatures();
+				System.out.print(String.format("%1$15s:", cell.getTranscription()));
+				for (Double feature : features) {
+					System.out.print(String.format("%1$6.3f ", feature));
+				}
+				System.out.print("\n");
+			}
+		}
 	}
 	
 	
