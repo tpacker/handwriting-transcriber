@@ -18,7 +18,7 @@ public class RecordCell
 	private GrayImage image;
 	private String transcription;
 	private ArrayList<Double> features = new ArrayList<Double>();
-
+	
 	
 	
 	public void readImage(String fileName)
