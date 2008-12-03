@@ -11,7 +11,9 @@ import jigl.image.GrayImage;
  */
 public class TrainAndTest
 {
-	public static final int testSetSize = 10;  
+	public static final int testSetSize = 10;
+	public static final int[] cellStateOrder = {1, 0, 2};
+	
 	
 	
 	/**
@@ -52,7 +54,7 @@ public class TrainAndTest
 		ProbabilityModel probabilityModel = new ProbabilityModel();
 		
 		// Compute state transition probabilities.
-		probabilityModel.computeStateTransitionProbs(trainSet);
+		probabilityModel.computeStateTransitionProbs(trainSet, cellStateOrder);
 		
 		return probabilityModel;
 	}
