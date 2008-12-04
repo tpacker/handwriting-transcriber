@@ -292,7 +292,16 @@ public class ProbabilityModel
 		}
 		
 		return sum / (trainSet.size() - 1);
-	}	
+	}
+	
+	
+	public String classify(RecordRow row)
+	{
+		
+		
+		
+		return "";
+	}
 	
 	
 	/**
@@ -340,14 +349,46 @@ public class ProbabilityModel
 		}
 		
 		double probability = 0.0;
-
+		
 		// (features - means[stateValue])^T * CovarianceMatrix[stateValue]^-1 * (features - means[stateValue])
-		double numerator = 0.0;
+		//Matrix featuresMatrix = new Matrix(features.toArray());
+		Matrix featureVector = makeVector(features);
+		Matrix featureMeanVector = makeVector(stateFeatureMeans.get(stateValue));
+		Matrix differenceVector = featureVector.minus(featureMeanVector); 
+		Matrix product = differenceVector.transpose().times(stateFeatureInverseCovarianceMatrices.get(stateValue));
+		double numerator = Math.exp(product.times(differenceVector).get(0, 0));
 		
 		double denominator = Math.sqrt(Math.pow(2, featureCount) * Math.pow(Math.PI, featureCount) * determinants.get(stateValue));
 				
 		probability = Math.exp(numerator / denominator);
 		
 		return probability;
+	}
+	
+	
+	private Matrix makeVector(double[] values)
+	{
+		Matrix featureMatrix = new Matrix(featureCount, 1);
+		
+		for (int pos = 0; pos < values.length; pos++)
+		{
+			featureMatrix.set(pos, 0, values[pos]);
+		}
+		
+		return featureMatrix;
+	}
+	
+	
+	private Matrix makeVector(ArrayList<Double> values)
+	{
+		Matrix featureMatrix = new Matrix(featureCount, 1);
+		
+		for (int pos = 0; pos < featureCount; pos++)
+		{
+			double value = values.get(pos);
+			featureMatrix.set(pos, 0, value);
+		}
+		
+		return featureMatrix;
 	}
 }
