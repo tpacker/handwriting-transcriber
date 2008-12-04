@@ -124,7 +124,7 @@ public class RecordCell
 		features.add(cosines[2]);
 		features.add(cosines[3]);
 		
-		features.add(sines[0]);
+		//features.add(sines[0]);
 		features.add(sines[1]);
 		features.add(sines[2]);
 	}
@@ -144,7 +144,7 @@ public class RecordCell
 		features.add(cosines[2]);
 		features.add(cosines[3]);
 		
-		features.add(sines[0]);
+		//features.add(sines[0]);
 		features.add(sines[1]);
 		features.add(sines[2]);
 	}

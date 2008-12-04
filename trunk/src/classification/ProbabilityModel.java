@@ -231,8 +231,8 @@ public class ProbabilityModel
 		{
 			Matrix matrix = new Matrix(stateFeatureCovariances.get(statePos));
 			stateFeatureCovarianceMatrices.put(statePos, matrix);
-			stateFeatureInverseCovarianceMatrices.put(statePos, matrix.inverse());
 			determinants.put(statePos, matrix.det());
+			stateFeatureInverseCovarianceMatrices.put(statePos, matrix.inverse());
 		}
 	}
 	
