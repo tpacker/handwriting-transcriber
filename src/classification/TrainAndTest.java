@@ -85,6 +85,9 @@ public class TrainAndTest
 	
 	private static void test(ProbabilityModel probabilityModel, ArrayList<RecordRow> testSet)
 	{
-		
+		for (RecordRow row : testSet)
+		{
+			probabilityModel.classify(row);
+		}
 	}
 }
