@@ -341,7 +341,7 @@ public class ProbabilityModel
 	 * @param features is the features observed.
 	 * @return an observation probability.
 	 */
-	public double observationProbability(String stateValue, ArrayList<Double> features)
+	public double observationProbability(int stateIndex, String stateValue, ArrayList<Double> features)
 	{
 		if (features.size() != featureCount)
 		{
@@ -351,9 +351,9 @@ public class ProbabilityModel
 		double probability = 0.0;
 		
 		// (features - means[stateValue])^T * CovarianceMatrix[stateValue]^-1 * (features - means[stateValue])
-		//Matrix featuresMatrix = new Matrix(features.toArray());
 		Matrix featureVector = makeVector(features);
-		Matrix featureMeanVector = makeVector(stateFeatureMeans.get(stateValue));
+		int valueIndex = stateValues.get(stateIndex).get(stateValue);
+		Matrix featureMeanVector = makeVector(stateFeatureMeans.get(valueIndex));
 		Matrix differenceVector = featureVector.minus(featureMeanVector); 
 		Matrix product = differenceVector.transpose().times(stateFeatureInverseCovarianceMatrices.get(stateValue));
 		double numerator = Math.exp(product.times(differenceVector).get(0, 0));
