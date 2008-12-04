@@ -38,7 +38,7 @@ public class RecordCell
 	public String getTranscription()
 	{
 		return transcription;
-	}	
+	}
 	
 	
 	public void addFeature(double featureValue)
@@ -74,25 +74,30 @@ public class RecordCell
 		MakeProjectionProfileFeature();
 	}
 	
+	
 	private void MakeHeightFeature()
 	{
 		this.addFeature(image.Y());
 	}
+	
 	
 	private void MakeWidthFeature()
 	{
 		this.addFeature(image.X());
 	}
 	
+	
 	private void MakeAspectRatioFeature()
 	{
 		this.addFeature(((double)image.X()) / ((double)image.Y()));
 	}
 	
+	
 	private void MakeAreaFeature()
 	{
-		this.addFeature(image.X()*image.Y());
+		this.addFeature(image.X() * image.Y());
 	}
+	
 	
 	/*private void MakeUpperProtrusionsFeature()
 	{
@@ -107,11 +112,13 @@ public class RecordCell
 	
 	private void MakeUpperProfileFeature()
 	{
+		// DFT.
 		int classId = 0;
 		double[] profile = ImageProcessing.getUpperProfile(image, classId);
 		double[] cosines = DFT.cosineValues(profile);
 		double[] sines = DFT.sineValues(profile);
-		// DFT.
+
+		// Insert 7 features into cell.
 		features.add(cosines[0]);
 		features.add(cosines[1]);
 		features.add(cosines[2]);
@@ -120,18 +127,18 @@ public class RecordCell
 		features.add(sines[0]);
 		features.add(sines[1]);
 		features.add(sines[2]);
-		
-		// Insert 7 features into cell.
 	}
 	
 	
 	private void MakeProjectionProfileFeature()
 	{
+		// DFT.
 		int classId = 0;
 		double[] profile = ImageProcessing.getXProfile(image, classId);
 		double[] cosines = DFT.cosineValues(profile);
 		double[] sines = DFT.sineValues(profile);
-		// DFT.
+
+		// Insert 7 features into cell.
 		features.add(cosines[0]);
 		features.add(cosines[1]);
 		features.add(cosines[2]);
