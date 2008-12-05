@@ -101,6 +101,81 @@ public class RecordCell
 	}
 	
 	
+	public void makeCheatingFeature()
+	{
+		double classValue = 0.0;
+		
+		if (getTranscription().compareTo("boarder") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("wife") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("head") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("father") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("mother") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("son") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("daughter") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("brother") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("sister") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("m") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+	}
+	
+	
 	private void MakeHeightFeature()
 	{
 		this.addFeature(image.Y());
@@ -150,9 +225,9 @@ public class RecordCell
 		features.add(cosines[2]);
 		features.add(cosines[3]);
 		
-		//features.add(sines[0]);
 		features.add(sines[1]);
 		features.add(sines[2]);
+		features.add(sines[3]);
 	}
 	
 	
@@ -170,8 +245,8 @@ public class RecordCell
 		features.add(cosines[2]);
 		features.add(cosines[3]);
 		
-		//features.add(sines[0]);
 		features.add(sines[1]);
 		features.add(sines[2]);
+		features.add(sines[3]);
 	}
 }

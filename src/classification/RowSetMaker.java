@@ -40,7 +40,7 @@ public class RowSetMaker
 				if (!rowFileBaseNameList.containsKey(fileBaseName))
 				{
 					rowFileBaseNameList.put(fileBaseName, fileBaseName);
-
+					
 					RecordRow row = new RecordRow(exractedRectanglePath + "\\" + fileBaseName);
 					rowSet.add(row);
 				}

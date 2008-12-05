@@ -66,6 +66,7 @@ public class RecordRow
 		for (int cellPos1 = 0; cellPos1 < RecordRow.rowLength; cellPos1++)
 		{
 			getCells().get(cellPos1).setTranscription(cellTranscriptions[cellPos1 + 1]);
+			//getCells().get(cellPos1).makeCheatingFeature();
 		}
 	}
 

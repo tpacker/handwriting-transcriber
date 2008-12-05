@@ -14,10 +14,12 @@ import Jama.*;
 public class ProbabilityModel
 {
 	public static final double smoothingConstant = 0.5;
+	public static final double varianceSmoothingConstant = 0.5;
 	public int featureCount = 0;
 	public int columnCount = 0;
 	public int[] cellStateOrder = null;
 	public int[] stateCellOrder = null;
+	public static final boolean debug = false;
 
 	
 	
@@ -170,9 +172,12 @@ public class ProbabilityModel
 			}
 		}
 		
-		//iraykhel 12/02
-		System.out.println("State transition counts:");
-		printStateTransitionStats(cellStateOrder);
+		if (debug)
+		{
+			//iraykhel 12/02
+			System.out.println("State transition counts:");
+			printStateTransitionStats(cellStateOrder);
+		}
 	}
 	
 	
@@ -245,7 +250,7 @@ public class ProbabilityModel
 	public void computeStateFeatureMeans(ArrayList<RecordRow> trainSet, int[] cellStateOrder)
 	{
 		int featureCount = trainSet.get(0).getCells().get(0).getFeatures().size();
-		int rowCount = trainSet.size();
+		Map<Integer, Map<String, Integer>> rowCounts = new HashMap<Integer, Map<String, Integer>>();
 		
 		// Compute feature value means.
 		
@@ -260,17 +265,27 @@ public class ProbabilityModel
 				if (means.get(statePos) == null)
 				{
 					means.put(statePos, new HashMap<String, Matrix>());
+					rowCounts.put(statePos, new HashMap<String, Integer>());
+					
 					for (String stateValue : stateValues.get(statePos).keySet())
 					{
 						means.get(statePos).put(stateValue, new Matrix(featureCount, 1));
 					}
 				}
 				
+				String stateValue = cell.getTranscription();
 				for (int featurePos = 0; featurePos < featureCount; featurePos++)
 				{
-					double currentMean = means.get(statePos).get(cell.getTranscription()).get(featurePos, 0);
-					means.get(statePos).get(cell.getTranscription()).set(featurePos, 0, currentMean + cell.getFeatures().get(featurePos));
+					double currentMean = means.get(statePos).get(stateValue).get(featurePos, 0);
+					means.get(statePos).get(stateValue).set(featurePos, 0, currentMean + cell.getFeatures().get(featurePos));
 				}
+				
+				if (rowCounts.get(statePos).get(stateValue) == null)
+				{
+					rowCounts.get(statePos).put(stateValue, 0);
+				}
+				int currentRowCount = rowCounts.get(statePos).get(stateValue);
+				rowCounts.get(statePos).put(stateValue, currentRowCount + 1);
 			}
 		}
 		
@@ -284,7 +299,7 @@ public class ProbabilityModel
 				for (int featurePos = 0; featurePos < featureCount; featurePos++)
 				{
 					double currentMean = means.get(statePos).get(stateValue).get(featurePos, 0);
-					means.get(statePos).get(stateValue).set(featurePos, 0, currentMean / rowCount);
+					means.get(statePos).get(stateValue).set(featurePos, 0, currentMean / rowCounts.get(statePos).get(stateValue));
 				}
 			}
 		}
@@ -307,7 +322,10 @@ public class ProbabilityModel
 			sum += (double)((featureValue1 - mean1) * (featureValue2 - mean2));
 		}
 		
-		return sum / (trainSet.size() - 1);
+		double varianceSmoothing = ((featurePos1 == featurePos2) ? varianceSmoothingConstant : 0);
+		//double varianceSmoothing = 0.0;
+		
+		return (sum / (trainSet.size() - 1)) + varianceSmoothing;
 	}
 	
 	
@@ -398,19 +416,6 @@ public class ProbabilityModel
 		double probability = numerator / denominator;
 		
 		return probability;
-	}
-	
-	
-	private Matrix makeVector(double[] values)
-	{
-		Matrix featureMatrix = new Matrix(featureCount, 1);
-		
-		for (int pos = 0; pos < values.length; pos++)
-		{
-			featureMatrix.set(pos, 0, values[pos]);
-		}
-		
-		return featureMatrix;
 	}
 	
 	
