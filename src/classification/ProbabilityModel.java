@@ -14,7 +14,7 @@ import Jama.Matrix;
 public class ProbabilityModel
 {
 	public static final double smoothingConstant = 0.5;
-	public static final double varianceSmoothingConstant = 0.5;
+	public static final double varianceSmoothingConstant = 5;
 	public int featureCount = 0;
 	public int columnCount = 0;
 	public int[] cellStateOrder = null;
