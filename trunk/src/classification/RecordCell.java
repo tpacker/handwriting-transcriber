@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import jigl.image.GrayImage;
 
+import utilities.BoundingBox;
 import utilities.DFT;
 import utilities.FFT;
 import utilities.File;
@@ -201,6 +202,8 @@ public class RecordCell
 	private void MakeWidthFeature()
 	{
 		this.addFeature(image.X());
+		
+//		BoundingBox bb
 	}
 	
 	
@@ -232,8 +235,11 @@ public class RecordCell
 		// DFT.
 		int classId = 0;
 		double[] profile = ImageProcessing.getUpperProfile(image, classId);
-		double[] cosines = FFT.cosineValues(profile);
-		double[] sines = FFT.sineValues(profile);
+		profile = ImageProcessing.fixProfile2(profile);
+//		double[] cosines = FFT.cosineValues(profile);
+//		double[] sines = FFT.sineValues(profile);
+		double[] cosines = DFT.cosineValues(profile);
+		double[] sines = DFT.sineValues(profile);
 
 		// Insert 7 features into cell.
 		features.add(cosines[0]);
