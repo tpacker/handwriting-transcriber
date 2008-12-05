@@ -57,28 +57,27 @@ public class ProbabilityModel
 	/**
 	 * cell/state number -> mean of each feature indexed by position (same position as feature vector).
 	 * Ordered by state order, not original column order.
+	 * Then indexed by state value (i.e. transcription).
 	 */
-	private Map<Integer, double[]> stateFeatureMeans = new HashMap<Integer, double[]>();
+	private Map<Integer, Map<String, Matrix>> means = new HashMap<Integer, Map<String, Matrix>>();
 	
 	/**
 	 * Ordered by state order, not original column order.
+	 * Then indexed by state value (i.e. transcription).
 	 */
-	private Map<Integer, double[][]> stateFeatureCovariances = new HashMap<Integer, double[][]>();
+	private Map<Integer, Map<String, Matrix>> covariances = new HashMap<Integer, Map<String, Matrix>>();
 	
 	/**
 	 * Ordered by state order, not original column order.
+	 * Then indexed by state value (i.e. transcription).
 	 */
-	private Map<Integer, Matrix> stateFeatureCovarianceMatrices = new HashMap<Integer, Matrix>();
+	private Map<Integer, Map<String, Matrix>> inverseCovariances = new HashMap<Integer, Map<String, Matrix>>();
 	
 	/**
 	 * Ordered by state order, not original column order.
+	 * Then indexed by state value (i.e. transcription).
 	 */
-	private Map<Integer, Matrix> stateFeatureInverseCovarianceMatrices = new HashMap<Integer, Matrix>();
-	
-	/**
-	 * Ordered by state order, not original column order.
-	 */
-	private Map<Integer, Double> determinants = new HashMap<Integer, Double>();
+	private Map<Integer, Map<String, Double>> determinants = new HashMap<Integer, Map<String, Double>>();
 	
 	
 	
@@ -214,27 +213,31 @@ public class ProbabilityModel
 		
 		// Compute covariances.
 		featureCount = trainSet.get(0).getCells().get(0).getFeatures().size();
-		stateFeatureCovariances = new HashMap<Integer, double[][]>(cellStateOrder.length);
-		for (int statePos = 0; statePos < cellStateOrder.length; statePos++)
-		{
-			stateFeatureCovariances.put(statePos, new double[featureCount][featureCount]);
-			for (int featurePos1 = 0; featurePos1 < featureCount; featurePos1++)
-			{
-				for (int featurePos2 = 0; featurePos2 < featureCount; featurePos2++)
-				{
-					stateFeatureCovariances.get(statePos)[featurePos1][featurePos2] = getCovariance(trainSet, statePos, featurePos1, featurePos2);
-				}
-			}
-		}
 		
-		stateFeatureCovarianceMatrices = new HashMap<Integer, Matrix>(cellStateOrder.length);
-		stateFeatureInverseCovarianceMatrices = new HashMap<Integer, Matrix>(cellStateOrder.length);
 		for (int statePos = 0; statePos < cellStateOrder.length; statePos++)
 		{
-			Matrix matrix = new Matrix(stateFeatureCovariances.get(statePos));
-			stateFeatureCovarianceMatrices.put(statePos, matrix);
-			determinants.put(statePos, matrix.det());
-			stateFeatureInverseCovarianceMatrices.put(statePos, matrix.inverse());
+			// Allocate space.
+			covariances.put(statePos, new HashMap<String, Matrix>());
+			inverseCovariances.put(statePos, new HashMap<String, Matrix>());
+			determinants.put(statePos, new HashMap<String, Double>());
+			
+			for (String stateValue : stateValues.get(statePos).keySet())
+			{
+				covariances.get(statePos).put(stateValue, new Matrix(featureCount, featureCount));
+
+				// Get covariances for each feature value pair.
+				for (int featurePos1 = 0; featurePos1 < featureCount; featurePos1++)
+				{
+					for (int featurePos2 = 0; featurePos2 < featureCount; featurePos2++)
+					{
+						covariances.get(statePos).get(stateValue).set(featurePos1, featurePos2, getCovariance(trainSet, statePos, stateValue, featurePos1, featurePos2));
+					}
+				}
+				
+				// Cache inverse covariances and determinants.
+				inverseCovariances.get(statePos).put(stateValue, covariances.get(statePos).get(stateValue).inverse()); 
+				determinants.get(statePos).put(stateValue, covariances.get(statePos).get(stateValue).det()); 
+			}
 		}
 	}
 	
@@ -251,16 +254,22 @@ public class ProbabilityModel
 			for (int cellPos = 0; cellPos < cellStateOrder.length; cellPos++)
 			{
 				RecordCell cell = row.getCells().get(cellPos);
+				int statePos = cellStateOrder[cellPos];
 				
-				// Make sure we have an array to put means into.
-				if (stateFeatureMeans.get(cellStateOrder[cellPos]) == null)
+				// Make sure we have arrays to put means into.
+				if (means.get(statePos) == null)
 				{
-					stateFeatureMeans.put(cellStateOrder[cellPos], new double[featureCount]);
+					means.put(statePos, new HashMap<String, Matrix>());
+					for (String stateValue : stateValues.get(statePos).keySet())
+					{
+						means.get(statePos).put(stateValue, new Matrix(featureCount, 1));
+					}
 				}
 				
 				for (int featurePos = 0; featurePos < featureCount; featurePos++)
 				{
-					stateFeatureMeans.get(cellStateOrder[cellPos])[featurePos] += cell.getFeatures().get(featurePos);
+					double currentMean = means.get(statePos).get(cell.getTranscription()).get(featurePos, 0);
+					means.get(statePos).get(cell.getTranscription()).set(featurePos, 0, currentMean + cell.getFeatures().get(featurePos));
 				}
 			}
 		}
@@ -268,23 +277,28 @@ public class ProbabilityModel
 		// Normalize all means by instance count.
 		for (int cellPos = 0; cellPos < columnCount; cellPos++)
 		{
-			for (int featurePos = 0; featurePos < featureCount; featurePos++)
+			int statePos = cellStateOrder[cellPos];
+
+			for (String stateValue : stateValues.get(statePos).keySet())
 			{
-				stateFeatureMeans.get(cellStateOrder[cellPos])[featurePos] /= rowCount;
+				for (int featurePos = 0; featurePos < featureCount; featurePos++)
+				{
+					double currentMean = means.get(statePos).get(stateValue).get(featurePos, 0);
+					means.get(statePos).get(stateValue).set(featurePos, 0, currentMean / rowCount);
+				}
 			}
 		}
 	}
 	
 	
-	
 	/**
 	 * Computes the covariance of two variables/features for a particular column/state given the training set.
 	 */
-	public double getCovariance(ArrayList<RecordRow> trainSet, int statePos, int featurePos1, int featurePos2)
+	public double getCovariance(ArrayList<RecordRow> trainSet, int statePos, String stateValue, int featurePos1, int featurePos2)
 	{
 		double sum = 0;
-		double mean1 = stateFeatureMeans.get(statePos)[featurePos1];
-		double mean2 = stateFeatureMeans.get(statePos)[featurePos2];
+		double mean1 = means.get(statePos).get(stateValue).get(featurePos1, 0);
+		double mean2 = means.get(statePos).get(stateValue).get(featurePos2, 0);
 		
 		for (RecordRow row : trainSet)
 		{
@@ -308,8 +322,6 @@ public class ProbabilityModel
 	
 	public void bruteClassify(RecordRow row)
 	{
-		String rowClass = "";
-		
 		for (int cellPos = 0; cellPos < columnCount; cellPos++)
 		{
 			RecordCell cell = row.getCells().get(cellPos);
@@ -376,13 +388,13 @@ public class ProbabilityModel
 		
 		// (features - means[stateValue])^T * CovarianceMatrix[stateValue]^-1 * (features - means[stateValue])
 		Matrix featureVector = makeVector(features);
-		Matrix featureMeanVector = makeVector(stateFeatureMeans.get(stateIndex));
+		Matrix featureMeanVector = means.get(stateIndex).get(stateValue);
 		Matrix differenceVector = featureVector.minus(featureMeanVector);
 		
-		Matrix product = differenceVector.transpose().times(stateFeatureInverseCovarianceMatrices.get(stateIndex));
+		Matrix product = differenceVector.transpose().times(inverseCovariances.get(stateIndex).get(stateValue));
 		
 		double numerator = Math.exp(product.times(differenceVector).get(0, 0));
-		double denominator = Math.sqrt(Math.pow(2, featureCount) * Math.pow(Math.PI, featureCount) * determinants.get(stateIndex));
+		double denominator = Math.sqrt(Math.pow(2, featureCount) * Math.pow(Math.PI, featureCount) * determinants.get(stateIndex).get(stateValue));
 		double probability = numerator / denominator;
 		
 		return probability;
