@@ -68,6 +68,58 @@ public class ImageProcessing {
 		return profile;
 		
 	}
+
+//	public static double[] fixProfile(double[] profile) {
+//		int powerof2 = 2;
+//		int oldlength = profile.length;
+//		while(powerof2<oldlength)
+//		{
+//			powerof2=powerof2*2;
+//		}
+//		
+//		int newlenght = powerof2;
+//		
+//		if(oldlength==newlenght) return profile;
+//		else{
+//			
+//			double newprofile[] = new double[newlenght];
+//			int i = 0;
+//			for (; i < oldlength; i++) {
+//				newprofile[i] = profile[i];
+//			}
+//			for (int j=0; i < newlenght; i++,j++) {
+//				newprofile[i] = profile[j];
+//			}
+//			return newprofile;
+//
+//			
+//		}
+//
+//	}
+	
+	public static double[] fixProfile(double[] profile) {
+		int powerof2 = 2;
+		int oldlength = profile.length;
+		while(powerof2<oldlength)
+		{
+			powerof2=powerof2*2;
+		}
+		if(oldlength==powerof2) return profile;
+		else{
+			int newlenght = powerof2/2;
+			double newprofile[] = new double[newlenght];
+			
+			for (int i = 0; i < newlenght; i++) {
+				newprofile[i] = profile[i];
+			}
+			return newprofile;
+
+			
+		}
+
+	}
+
+	
 	
 	
 	public static double[] getYProfile(GrayImage image, int classId) {

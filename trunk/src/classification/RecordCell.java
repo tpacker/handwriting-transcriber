@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import jigl.image.GrayImage;
 
 import utilities.DFT;
+import utilities.FFT;
 import utilities.File;
 
 
@@ -216,8 +217,8 @@ public class RecordCell
 		// DFT.
 		int classId = 0;
 		double[] profile = ImageProcessing.getUpperProfile(image, classId);
-		double[] cosines = DFT.cosineValues(profile);
-		double[] sines = DFT.sineValues(profile);
+		double[] cosines = FFT.cosineValues(profile);
+		double[] sines = FFT.sineValues(profile);
 
 		// Insert 7 features into cell.
 		features.add(cosines[0]);
