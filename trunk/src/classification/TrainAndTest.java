@@ -9,8 +9,9 @@ import java.util.ArrayList;
  */
 public class TrainAndTest
 {
-	public static final int testSetSize = 20;
+	public static final int testSetSize = 5;
 	public static final int[] cellStateOrder = {1, 0, 2};
+	public static final boolean debug = false;
 	
 	
 	
@@ -21,45 +22,67 @@ public class TrainAndTest
 	{
 		// Create row set.
 		ArrayList<RecordRow> rowSet = RowSetMaker.MakeRowSet();
+		double accuracy = 0.0;
+		int folds = 0;
 		
-		// Split into train and test sets.
-		ArrayList<RecordRow> trainSet = new ArrayList<RecordRow>();
-		ArrayList<RecordRow> testSet = new ArrayList<RecordRow>();
-		for (int rowPos = 0; rowPos < rowSet.size(); rowPos++)
+		for (int setOffset = 0; setOffset < rowSet.size(); setOffset += testSetSize)
 		{
-			if (rowPos < rowSet.size() - testSetSize)
+			// Split into train and test sets.
+			ArrayList<RecordRow> trainSet = new ArrayList<RecordRow>();
+			ArrayList<RecordRow> testSet = new ArrayList<RecordRow>();
+			for (int rowPos = 0; rowPos < rowSet.size(); rowPos++)
 			{
-				trainSet.add(rowSet.get(rowPos));
+				if (((rowPos + setOffset) % rowSet.size()) < (rowSet.size() - testSetSize))
+				{
+					trainSet.add(rowSet.get(rowPos));
+				}
+				else
+				{
+					testSet.add(rowSet.get(rowPos));
+				}
 			}
-			else
+			
+			// Train.
+			ProbabilityModel probabilityModel = train(trainSet);
+			
+			if (debug)
 			{
-				testSet.add(rowSet.get(rowPos));
+				//iraykhel 12/02
+				System.out.println("Training set:");
+				printDataset(trainSet);
 			}
+			
+			// Test.
+			accuracy += test(probabilityModel, testSet);		
+			
+			if (debug)
+			{
+				System.out.println();
+				System.out.println("Done.");
+			}
+			
+			folds++;
 		}
 		
-		// Train.
-		ProbabilityModel probabilityModel = train(trainSet);
-		
-		//iraykhel 12/02
-		System.out.println("Training set:");
-		printDataset(trainSet);
-		
-		// Test.
-		test(probabilityModel, testSet);		
-		
+		accuracy /= folds;
+		System.out.println("Average Accuracy: " + accuracy);
 		System.out.println();
 		System.out.println("Done.");
 	}
 	
 	
 	//iraykhel 12/02 cutesy print dataset
-	private static void printDataset(ArrayList<RecordRow> dataSet) {
-		for (RecordRow row : dataSet) {
+	private static void printDataset(ArrayList<RecordRow> dataSet)
+	{
+		for (RecordRow row : dataSet)
+		{
 			ArrayList<RecordCell> cells = row.getCells();
-			for (RecordCell cell : cells) {
+			for (RecordCell cell : cells)
+			{
 				ArrayList<Double> features = cell.getFeatures();
 				System.out.print(String.format("%1$15s:", cell.getTranscription()));
-				for (Double feature : features) {
+				for (Double feature : features)
+				{
 					System.out.print(String.format("%1$9.3f ", feature));
 				}
 				System.out.print("\n");
@@ -82,7 +105,7 @@ public class TrainAndTest
 	}
 	
 	
-	private static void test(ProbabilityModel probabilityModel, ArrayList<RecordRow> testSet)
+	private static double test(ProbabilityModel probabilityModel, ArrayList<RecordRow> testSet)
 	{
 		// Decide on the best classifications.
 		for (RecordRow row : testSet)
@@ -94,25 +117,38 @@ public class TrainAndTest
 		// Print out results.
 		double accuracy = 0.0;
 		int cellCount = 0;
-		System.out.println();
-		System.out.println("Transcription\tPrediction\tPrediction Prob");
+		
+		if (debug)
+		{
+			System.out.println();
+			System.out.println("Transcription\tPrediction\tPrediction Prob");
+		}
 		
 		for (RecordRow row : testSet)
 		{
+			int cellPos = 0;
 			for (RecordCell cell : row.getCells())
 			{
-				cellCount++;
-				if (cell.getTranscription().compareTo(cell.getPredictedTranscription()) == 0)
+				//if (cellPos++ != 0)
 				{
-					accuracy += 1.0;
+					cellCount++;
+					if (cell.getTranscription().compareTo(cell.getPredictedTranscription()) == 0)
+					{
+						accuracy += 1.0;
+					}
+					
+					//if (debug)
+					{
+						System.out.println(cell.getTranscription() + "\t" + cell.getPredictedTranscription() + "\t" + cell.getPredictionProbability());
+					}
 				}
-				System.out.println(cell.getTranscription() + "\t" + cell.getPredictedTranscription() + "\t" + cell.getPredictionProbability());
 			}
 		}
 		
 		accuracy /= cellCount;
 
 		System.out.println("Accuracy: " + accuracy);
-		System.out.println();
+		
+		return accuracy;
 	}
 }
