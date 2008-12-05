@@ -345,10 +345,16 @@ public class ProbabilityModel
 			RecordCell cell = row.getCells().get(cellPos);
 			int statePos = cellStateOrder[cellPos];
 			
+			// Temp:
+			cell.setPredictionProbability(999999999);
+			
 			for (String stateValue : stateValues.get(statePos).keySet())
 			{
 				double observationProbability = observationProbability(statePos, stateValue, cell.getFeatures());
-				if (observationProbability > cell.getPredictionProbability())
+				cell.setPredictions(cell.getPredictions() + stateValue + " " + observationProbability + "\n");
+				//if (observationProbability > cell.getPredictionProbability())
+				// Temp:
+				if (observationProbability < cell.getPredictionProbability())
 				{
 					cell.setPredictionProbability(observationProbability);
 					cell.setPredictedTranscription(stateValue);

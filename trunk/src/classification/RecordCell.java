@@ -18,9 +18,10 @@ public class RecordCell
 	private String fileName;
 	private GrayImage image;
 	private String transcription;
-	private String predictedTranscription;
+	private String predictedTranscription = "";
 	private double predictionProbability;
 	private ArrayList<Double> features = new ArrayList<Double>();
+	private String predictions = "";
 	
 	
 	
@@ -29,6 +30,12 @@ public class RecordCell
 		this.fileName = fileName;
 		image = File.openGrayImage(fileName);
 		MakeFeatures();
+	}
+	
+
+	public GrayImage getImage()
+	{
+		return image;
 	}
 	
 
@@ -73,17 +80,25 @@ public class RecordCell
 		features.add(featureValue);
 	}
 	
+	
 	//iraykhel 12/02
 	public ArrayList<Double> getFeatures()
 	{
 		return features;
 	}
-	
-	//iraykhel 12/02
-	public GrayImage getImage()
+
+
+	public void setPredictions(String predictions)
 	{
-		return image;
+		this.predictions = predictions;
 	}
+
+
+	public String getPredictions()
+	{
+		return predictions;
+	}
+	
 	
 	
 	/**
