@@ -85,9 +85,33 @@ public class TrainAndTest
 	
 	private static void test(ProbabilityModel probabilityModel, ArrayList<RecordRow> testSet)
 	{
+		// Decide on the best classifications.
 		for (RecordRow row : testSet)
 		{
-			probabilityModel.classify(row);
+			//probabilityModel.classify(row);
+			probabilityModel.bruteClassify(row);
 		}
+
+		// Print out results.
+		double accuracy = 0.0;
+		int cellCount = 0;
+		System.out.println("Transcription\tPrediction\tPrediction Prob");
+		
+		for (RecordRow row : testSet)
+		{
+			for (RecordCell cell : row.getCells())
+			{
+				cellCount++;
+				if (cell.getTranscription().compareTo(cell.getPredictedTranscription()) == 0)
+				{
+					accuracy += 1.0;
+				}
+				System.out.println(cell.getTranscription() + "\t" + cell.getPredictedTranscription() + "\t" + cell.getPredictionProbability());
+			}
+		}
+		
+		accuracy /= cellCount;
+
+		System.out.println("Accuracy: " + accuracy);
 	}
 }

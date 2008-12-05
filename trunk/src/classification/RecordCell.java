@@ -17,6 +17,8 @@ public class RecordCell
 	private String fileName;
 	private GrayImage image;
 	private String transcription;
+	private String predictedTranscription;
+	private double predictionProbability;
 	private ArrayList<Double> features = new ArrayList<Double>();
 	
 	
@@ -38,6 +40,30 @@ public class RecordCell
 	public String getTranscription()
 	{
 		return transcription;
+	}
+	
+
+	public void setPredictedTranscription(String predictedTranscription)
+	{
+		this.predictedTranscription = predictedTranscription;
+	}
+
+	
+	public String getPredictedTranscription()
+	{
+		return predictedTranscription;
+	}
+	
+
+	public void setPredictionProbability(double predictionProbability)
+	{
+		this.predictionProbability = predictionProbability;
+	}
+
+
+	public double getPredictionProbability()
+	{
+		return predictionProbability;
 	}
 	
 	

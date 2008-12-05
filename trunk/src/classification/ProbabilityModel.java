@@ -15,6 +15,7 @@ public class ProbabilityModel
 {
 	public static final double smoothingConstant = 0.5;
 	public int featureCount = 0;
+	public int columnCount = 0;
 	public int[] cellStateOrder = null;
 	public int[] stateCellOrder = null;
 
@@ -86,8 +87,9 @@ public class ProbabilityModel
 		// Record our orderings.
 		this.cellStateOrder = cellStateOrder;
 		stateCellOrder = new int[cellStateOrder.length];
+		columnCount = trainSet.get(0).getCells().size();
 		
-		for (int cellPos = 0; cellPos < trainSet.get(0).getCells().size(); cellPos++)
+		for (int cellPos = 0; cellPos < columnCount; cellPos++)
 		{
 			// Create the map of state values of the right size.
 			stateValues.put(cellPos, new HashMap<String, Integer>());
@@ -110,7 +112,7 @@ public class ProbabilityModel
 		for (RecordRow row : trainSet)
 		{
 			ArrayList<RecordCell> cells = row.getCells();
-			for (int cellPos = 0; cellPos < cells.size(); cellPos++)
+			for (int cellPos = 0; cellPos < columnCount; cellPos++)
 			{
 				String transcription = cells.get(cellPos).getTranscription();
 				if (!stateValues.get(cellStateOrder[cellPos]).containsKey(transcription))
@@ -125,9 +127,9 @@ public class ProbabilityModel
 		{
 			// Count state statistics for marginal probabilities.
 			
-			// Create state array of the rigiht size.
-			int size = stateValues.get(cellStateOrder[cellPos]).size();
-			stateStats.put(cellStateOrder[cellPos], new int[size]);
+			// Create state array of the right size.
+			int stateValueCount = stateValues.get(cellStateOrder[cellPos]).size();
+			stateStats.put(cellStateOrder[cellPos], new int[stateValueCount]);
 			
 			// Fill in the stats table.  The indices into the table are found in the stateValue map, 
 			// indexed by cell number and then by state name (i.e. transcription).  
@@ -149,9 +151,9 @@ public class ProbabilityModel
 				// Create the map of state transition probabilities of the right size.
 				// The size of each 2-dimensional array is the number of state values for one state by the 
 				// number of values for the next state, given the ordering of states in the stateOrder parameters.
-				int size1 = stateValues.get(cellStateOrder[cellPos]).size();
-				int size2 = stateValues.get(cellStateOrder[cellPos] + 1).size();
-				stateTransitionStats.put(cellStateOrder[cellPos], new int[size1][size2]);
+				int stateValueCount1 = stateValues.get(cellStateOrder[cellPos]).size();
+				int stateValueCount2 = stateValues.get(cellStateOrder[cellPos] + 1).size();
+				stateTransitionStats.put(cellStateOrder[cellPos], new int[stateValueCount1][stateValueCount2]);
 				
 				// Fill in the stats table.  The indices into the table are found in the stateValue map, 
 				// indexed by cell number and then by state name (i.e. transcription).  
@@ -178,9 +180,9 @@ public class ProbabilityModel
 	//iraykhel 12/02: cutesy print transition matrix
 	public void printStateTransitionStats(int[] cellStateOrder)
 	{
-		for (int cellPos = 0; cellPos < cellStateOrder.length; cellPos++)
+		for (int cellPos = 0; cellPos < columnCount; cellPos++)
 		{
-			if (cellStateOrder[cellPos] < cellStateOrder.length - 1)
+			if (cellStateOrder[cellPos] < columnCount - 1)
 			{
 				HashMap<String,Integer> valToIndexMap = stateValues.get(cellStateOrder[cellPos]);
 				Set<Entry<String,Integer>> vtiSet = valToIndexMap.entrySet();
@@ -264,7 +266,7 @@ public class ProbabilityModel
 		}
 		
 		// Normalize all means by instance count.
-		for (int cellPos = 0; cellPos < cellStateOrder.length; cellPos++)
+		for (int cellPos = 0; cellPos < columnCount; cellPos++)
 		{
 			for (int featurePos = 0; featurePos < featureCount; featurePos++)
 			{
@@ -301,6 +303,30 @@ public class ProbabilityModel
 		
 		
 		return "";
+	}
+	
+	
+	public void bruteClassify(RecordRow row)
+	{
+		String rowClass = "";
+		
+		for (int cellPos = 0; cellPos < columnCount; cellPos++)
+		{
+			RecordCell cell = row.getCells().get(cellPos);
+			int statePos = cellStateOrder[cellPos];
+			
+			for (String stateValue : stateValues.get(statePos).keySet())
+			{
+				double observationProbability = observationProbability(statePos, stateValue, cell.getFeatures());
+				if (observationProbability > cell.getPredictionProbability())
+				{
+					cell.setPredictionProbability(observationProbability);
+					cell.setPredictedTranscription(stateValue);
+				}
+			}
+		}
+		
+//		public double transitionProbability(int stateIndex, String stateValue1, String stateValue2)
 	}
 	
 	
@@ -348,19 +374,16 @@ public class ProbabilityModel
 			System.out.println("*** Feature counts do not match! ***");
 		}
 		
-		double probability = 0.0;
-		
 		// (features - means[stateValue])^T * CovarianceMatrix[stateValue]^-1 * (features - means[stateValue])
 		Matrix featureVector = makeVector(features);
-		int valueIndex = stateValues.get(stateIndex).get(stateValue);
-		Matrix featureMeanVector = makeVector(stateFeatureMeans.get(valueIndex));
-		Matrix differenceVector = featureVector.minus(featureMeanVector); 
-		Matrix product = differenceVector.transpose().times(stateFeatureInverseCovarianceMatrices.get(stateValue));
-		double numerator = Math.exp(product.times(differenceVector).get(0, 0));
+		Matrix featureMeanVector = makeVector(stateFeatureMeans.get(stateIndex));
+		Matrix differenceVector = featureVector.minus(featureMeanVector);
 		
-		double denominator = Math.sqrt(Math.pow(2, featureCount) * Math.pow(Math.PI, featureCount) * determinants.get(stateValue));
-				
-		probability = Math.exp(numerator / denominator);
+		Matrix product = differenceVector.transpose().times(stateFeatureInverseCovarianceMatrices.get(stateIndex));
+		
+		double numerator = Math.exp(product.times(differenceVector).get(0, 0));
+		double denominator = Math.sqrt(Math.pow(2, featureCount) * Math.pow(Math.PI, featureCount) * determinants.get(stateIndex));
+		double probability = numerator / denominator;
 		
 		return probability;
 	}
