@@ -2,8 +2,6 @@ package classification;
 
 import java.util.ArrayList;
 
-import jigl.image.GrayImage;
-
 
 
 /**
@@ -11,7 +9,7 @@ import jigl.image.GrayImage;
  */
 public class TrainAndTest
 {
-	public static final int testSetSize = 10;
+	public static final int testSetSize = 20;
 	public static final int[] cellStateOrder = {1, 0, 2};
 	
 	
@@ -49,6 +47,7 @@ public class TrainAndTest
 		// Test.
 		test(probabilityModel, testSet);		
 		
+		System.out.println();
 		System.out.println("Done.");
 	}
 	
@@ -91,10 +90,11 @@ public class TrainAndTest
 			//probabilityModel.classify(row);
 			probabilityModel.bruteClassify(row);
 		}
-
+		
 		// Print out results.
 		double accuracy = 0.0;
 		int cellCount = 0;
+		System.out.println();
 		System.out.println("Transcription\tPrediction\tPrediction Prob");
 		
 		for (RecordRow row : testSet)
@@ -113,5 +113,6 @@ public class TrainAndTest
 		accuracy /= cellCount;
 
 		System.out.println("Accuracy: " + accuracy);
+		System.out.println();
 	}
 }
