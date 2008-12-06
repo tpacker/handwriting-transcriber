@@ -15,6 +15,7 @@ public class ProbabilityModel
 {
 	public static final double smoothingConstant = 0.5;
 	public static final double varianceSmoothingConstant = 5;
+	//public static final double varianceSmoothingConstant = 0;
 	public int featureCount = 0;
 	public int columnCount = 0;
 	public int[] cellStateOrder = null;
@@ -37,7 +38,7 @@ public class ProbabilityModel
 	 * Ordered by state order, not original column order.
 	 */
 	private Map<Integer, int[][]> stateTransitionStats = new HashMap<Integer, int[][]>();
-
+	
 	/**
 	 * How many total observations of any pair of state values were seen.
 	 */
@@ -229,7 +230,7 @@ public class ProbabilityModel
 			for (String stateValue : stateValues.get(statePos).keySet())
 			{
 				covariances.get(statePos).put(stateValue, new Matrix(featureCount, featureCount));
-
+				
 				// Get covariances for each feature value pair.
 				for (int featurePos1 = 0; featurePos1 < featureCount; featurePos1++)
 				{
@@ -346,20 +347,23 @@ public class ProbabilityModel
 			int statePos = cellStateOrder[cellPos];
 			
 			// Temp:
-			cell.setPredictionProbability(999999999);
+			//cell.setPredictionProbability(999999999);
 			
 			for (String stateValue : stateValues.get(statePos).keySet())
 			{
 				double observationProbability = observationProbability(statePos, stateValue, cell.getFeatures());
 				cell.setPredictions(cell.getPredictions() + stateValue + " " + observationProbability + "\n");
-				//if (observationProbability > cell.getPredictionProbability())
+				
+				if (observationProbability > cell.getPredictionProbability())
 				// Temp:
-				if (observationProbability < cell.getPredictionProbability())
+				//if (observationProbability < cell.getPredictionProbability())
 				{
 					cell.setPredictionProbability(observationProbability);
 					cell.setPredictedTranscription(stateValue);
 				}
 			}
+			
+			int x = 0;
 		}
 		
 //		public double transitionProbability(int stateIndex, String stateValue1, String stateValue2)
@@ -416,8 +420,8 @@ public class ProbabilityModel
 		Matrix differenceVector = featureVector.minus(featureMeanVector);
 		
 		Matrix product = differenceVector.transpose().times(inverseCovariances.get(stateIndex).get(stateValue));
+		double numerator = Math.exp(-product.times(differenceVector).get(0, 0));
 		
-		double numerator = Math.exp(product.times(differenceVector).get(0, 0));
 		double denominator = Math.sqrt(Math.pow(2, featureCount) * Math.pow(Math.PI, featureCount) * determinants.get(stateIndex).get(stateValue));
 		double probability = numerator / denominator;
 		

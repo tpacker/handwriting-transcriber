@@ -161,6 +161,41 @@ public class RecordCell
 		this.addFeature(classValue);
 		
 		classValue = 0.0;
+		if (getTranscription().compareTo("partner") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("servant") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("nephew") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("father-in-law") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("mother-in-law") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
 		if (getTranscription().compareTo("son") == 0)
 		{
 			classValue = 1.0;
@@ -190,6 +225,34 @@ public class RecordCell
 		
 		classValue = 0.0;
 		if (getTranscription().compareTo("m") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("f") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("d") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("wd") == 0)
+		{
+			classValue = 1.0;
+		}
+		this.addFeature(classValue);
+		
+		classValue = 0.0;
+		if (getTranscription().compareTo("s") == 0)
 		{
 			classValue = 1.0;
 		}
