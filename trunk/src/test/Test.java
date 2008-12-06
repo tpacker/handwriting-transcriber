@@ -1,6 +1,7 @@
 package test;
 
 import imageprocessing.*;
+import utilities.BoundingBox;
 import utilities.DFT;
 import utilities.FFT;
 import utilities.Plot;
@@ -12,11 +13,20 @@ public class Test {
 //		System.out.println("hello world");
 //		Test.ReadInFile();
 //		Test.PlotProfile();
-		Test.DFTProfile();
+//		Test.DFTProfile();
 //		Test.PlotUpperWordProfile();
 //		Test.DFT();
+		Test.BoundingFeatures();
 	}
-	
+	public static void BoundingFeatures() {
+		GrayImage image = ImageProcessing.readPgmImage("./Test/images/wife.pgm");
+		ImageProcessing.displayImage(image, "file");
+		BoundingBox bb = PatternRecognition.getBoundingBox(image, 0);
+		System.out.println("width: "+bb.getWidth());
+		System.out.println("height: "+bb.getHeigth());
+
+	}
+
 	public static void ReadInFile() {
 		GrayImage image = ImageProcessing.readPgmImage("./Test/images/wife.pgm");
 		ImageProcessing.displayImage(image, "file");

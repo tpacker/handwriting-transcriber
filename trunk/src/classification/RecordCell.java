@@ -2,6 +2,7 @@ package classification;
 
 
 import imageprocessing.ImageProcessing;
+import imageprocessing.PatternRecognition;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ public class RecordCell
 	private double predictionProbability;
 	private ArrayList<Double> features = new ArrayList<Double>();
 	private String predictions = "";
+	BoundingBox boundingBox;
 	
 	
 	
@@ -30,6 +32,8 @@ public class RecordCell
 	{
 		this.fileName = fileName;
 		image = File.openGrayImage(fileName);
+		int objcolor =0; 
+		boundingBox= PatternRecognition.getBoundingBox(image, objcolor);
 		MakeFeatures();
 	}
 	
@@ -195,27 +199,36 @@ public class RecordCell
 	
 	private void MakeHeightFeature()
 	{
-		this.addFeature(image.Y());
+//		this.addFeature(image.Y());
+		
+		this.addFeature(boundingBox.getHeigth());
 	}
 	
 	
 	private void MakeWidthFeature()
 	{
-		this.addFeature(image.X());
+//		this.addFeature(image.X());
 		
-//		BoundingBox bb
+		this.addFeature(boundingBox.getWidth());
 	}
 	
 	
 	private void MakeAspectRatioFeature()
 	{
-		this.addFeature(((double)image.X()) / ((double)image.Y()));
+//		this.addFeature(((double)image.X()) / ((double)image.Y()));
+		double width = boundingBox.getWidth();
+		double height = boundingBox.getHeigth();
+		this.addFeature(width/height);
 	}
 	
 	
 	private void MakeAreaFeature()
 	{
-		this.addFeature(image.X() * image.Y());
+//		this.addFeature(image.X() * image.Y());
+		
+		double width = boundingBox.getWidth();
+		double height = boundingBox.getHeigth();
+		this.addFeature(width*height);
 	}
 	
 	
