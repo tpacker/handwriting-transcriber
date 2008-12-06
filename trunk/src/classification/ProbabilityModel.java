@@ -3,6 +3,7 @@ package classification;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -185,23 +186,38 @@ public class ProbabilityModel
 	//iraykhel 12/02: cutesy print transition matrix
 	public void printStateTransitionStats(int[] cellStateOrder)
 	{
-		for (int cellPos = 0; cellPos < columnCount; cellPos++)
+		for (int stateIndex = 0; stateIndex < columnCount; stateIndex++)
 		{
-			if (cellStateOrder[cellPos] < columnCount - 1)
+			
+			//if (cellStateOrder[cellPos] < columnCount - 1)
 			{
-				HashMap<String,Integer> valToIndexMap = stateValues.get(cellStateOrder[cellPos]);
-				Set<Entry<String,Integer>> vtiSet = valToIndexMap.entrySet();
-				HashMap<String,Integer> valToIndexMapNext = stateValues.get(cellStateOrder[cellPos] + 1);
-				Set<Entry<String,Integer>> vtiSetNext = valToIndexMapNext.entrySet();
+				Set<String> vtiSet = new HashSet<String>();
+				if (stateIndex > 0) {
+					HashMap<String,Integer> valToIndexMap = stateValues.get(stateIndex-1);
+					vtiSet = valToIndexMap.keySet();
+				} else {
+					vtiSet.add(null);
+				}
+				HashMap<String,Integer> valToIndexMapNext = stateValues.get(stateIndex);
+				Set<String> vtiSetNext = valToIndexMapNext.keySet();
 				
-				for (Entry<String,Integer> vtiEntry : vtiSet)
+				System.out.println("SIZE FOR STATE " + stateIndex + ":" + vtiSet.size() + " " + vtiSetNext.size());
+				
+				int szfrom = 0;
+				int szto = 0;
+				for (String vtiEntry : vtiSet)
 				{
-					for (Entry<String,Integer> vtiEntryNext : vtiSetNext)
+					szfrom++;
+					szto = 0;
+					for (String vtiEntryNext : vtiSetNext)
 					{
-						int count = stateTransitionStats.get(cellStateOrder[cellPos])[vtiEntry.getValue()][vtiEntryNext.getValue()];
-						System.out.println(vtiEntry.getKey() + "->" + vtiEntryNext.getKey() + ": " + count);
+						szto++;
+						//int count = stateTransitionStats.get(stateIndex)[vtiEntry.getValue()][vtiEntryNext.getValue()];
+						double prob = this.transitionProbability(stateIndex, vtiEntry, vtiEntryNext);
+						System.out.println(vtiEntry + "->" + vtiEntryNext + ": " + prob);
 					}
 				}
+				
 			}
 		}
 	}
@@ -339,7 +355,7 @@ public class ProbabilityModel
 	}
 	
 	
-	public void bruteClassify(RecordRow row)
+	/*public void bruteClassify(RecordRow row)
 	{
 		for (int cellPos = 0; cellPos < columnCount; cellPos++)
 		{
@@ -367,7 +383,7 @@ public class ProbabilityModel
 		}
 		
 //		public double transitionProbability(int stateIndex, String stateValue1, String stateValue2)
-	}
+	}*/
 	
 	
 	/**
@@ -394,7 +410,7 @@ public class ProbabilityModel
 		{
 			int valueIndex1 = stateValues.get(stateIndex - 1).get(stateValue1);
 			int valueIndex2 = stateValues.get(stateIndex).get(stateValue2);
-			probability = (stateTransitionStats.get(stateIndex)[valueIndex1][valueIndex2] + smoothingConstant) / stateTransitionNormalizers.get(stateIndex); 
+			probability = (((double)stateTransitionStats.get(stateIndex-1)[valueIndex1][valueIndex2]) + smoothingConstant) / ((double)stateTransitionNormalizers.get(stateIndex-1)); 
 		}
 		
 		return probability;
@@ -440,5 +456,9 @@ public class ProbabilityModel
 		}
 		
 		return featureMatrix;
+	}
+	
+	public Map<Integer, HashMap<String, Integer>> getStateValues() {
+		return stateValues;
 	}
 }
