@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class TrainAndTest
 {
 	public static final int testSetSize = 5;
-	public static final int[] cellStateOrder = {1, 0, 2};
+	public static final int[] cellStateOrder = {1,2,0};
 	public static final boolean debug = false;
 	
 	
@@ -107,12 +107,13 @@ public class TrainAndTest
 	
 	private static double test(ProbabilityModel probabilityModel, ArrayList<RecordRow> testSet)
 	{
+		
 		// Decide on the best classifications.
-		for (RecordRow row : testSet)
+		/*for (RecordRow row : testSet)
 		{
 			//probabilityModel.classify(row);
 			probabilityModel.bruteClassify(row);
-		}
+		}*/
 		
 		// Print out results.
 		double accuracy = 0.0;
@@ -126,6 +127,9 @@ public class TrainAndTest
 		
 		for (RecordRow row : testSet)
 		{
+			ViterbiTree.labelSequence(probabilityModel, row);
+			//root.setPredictions(probabilityModel, row);
+			
 			int cellPos = 0;
 			for (RecordCell cell : row.getCells())
 			{
@@ -139,7 +143,8 @@ public class TrainAndTest
 					
 					//if (debug)
 					{
-						System.out.println(cell.getTranscription() + "\t" + cell.getPredictedTranscription() + "\t" + cell.getPredictionProbability());
+						System.out.println(cell.getTranscription() + "\t" + cell.getPredictedTranscription() + 
+								"\t" + cell.getPredictedObservationProbability() + "\t" + cell.getPredictedTransitionProbability());
 					}
 				}
 			}

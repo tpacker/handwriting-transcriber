@@ -21,7 +21,8 @@ public class RecordCell
 	private GrayImage image;
 	private String transcription;
 	private String predictedTranscription = "";
-	private double predictionProbability;
+	private double predictedObservationProbability;
+	private double predictedTransitionProbability;
 	private ArrayList<Double> features = new ArrayList<Double>();
 	private String predictions = "";
 	BoundingBox boundingBox;
@@ -68,7 +69,7 @@ public class RecordCell
 	}
 	
 
-	public void setPredictionProbability(double predictionProbability)
+	/*public void setPredictionProbability(double predictionProbability)
 	{
 		this.predictionProbability = predictionProbability;
 	}
@@ -77,7 +78,29 @@ public class RecordCell
 	public double getPredictionProbability()
 	{
 		return predictionProbability;
+	}*/
+	
+	public void setPredictedObservationProbability(double prob) 
+	{
+		this.predictedObservationProbability = prob;
 	}
+	
+	public double getPredictedObservationProbability() 
+	{
+		return this.predictedObservationProbability;
+	}
+	
+	public void setPredictedTransitionProbability(double prob) 
+	{
+		this.predictedTransitionProbability = prob;
+	}
+	
+	public double getPredictedTransitionProbability() 
+	{
+		return this.predictedTransitionProbability;
+	}
+	
+	
 	
 	
 	public void addFeature(double featureValue)
