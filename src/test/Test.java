@@ -12,11 +12,13 @@ public class Test {
 		
 //		System.out.println("hello world");
 //		Test.ReadInFile();
-//		Test.PlotProfile();
+//		Test.PlotProjectionProfile();
 //		Test.DFTProfile();
 //		Test.PlotUpperWordProfile();
 //		Test.DFT();
-		Test.BoundingFeatures();
+//		Test.BoundingFeatures();
+//		Test.PlotUpperWordProfile();
+		Test.PlotLowerWordProfile();
 	}
 	public static void BoundingFeatures() {
 		GrayImage image = ImageProcessing.readPgmImage("./Test/images/wife.pgm");
@@ -42,8 +44,8 @@ public class Test {
 		double[] Xprofile = ImageProcessing.getXProfile(image, classId);
 		double[] Yprofile = ImageProcessing.getYProfile(image, classId);
 
-		chart.setSubplot(Xprofile, "X profile");
-		chart.setSubplot(Yprofile, "Y profile");
+		chart.setSubplot(Xprofile, "Projection Profile");
+//		chart.setSubplot(Yprofile, "Y profile");
 
 		chart.draw();
 
@@ -99,6 +101,22 @@ public class Test {
 //		double[] Yprofile = ImageProcessing.getYProfile(image, classId);
 
 		chart.setSubplot(profile, "Upper profile");
+//		chart.setSubplot(Yprofile, "Y profile");
+
+		chart.draw();
+
+	}
+	
+	public static void PlotLowerWordProfile() {
+		GrayImage image = ImageProcessing.readPgmImage("./Test/images/circle.pgm");
+		ImageProcessing.displayImage(image, "file");
+		Plot chart = new Plot();
+		int classId = 0;
+
+		double[] profile = ImageProcessing.getLowerProfile(image, classId);
+//		double[] Yprofile = ImageProcessing.getYProfile(image, classId);
+
+		chart.setSubplot(profile, "Lower profile");
 //		chart.setSubplot(Yprofile, "Y profile");
 
 		chart.draw();
