@@ -119,6 +119,7 @@ public class RecordCell
 		
 		MakeUpperProfileFeature();
 		MakeProjectionProfileFeature();
+//		MakeLowerProfileFeature();
 	}
 	
 	
@@ -311,9 +312,11 @@ public class RecordCell
 		// DFT.
 		int classId = 0;
 		double[] profile = ImageProcessing.getUpperProfile(image, classId);
-		profile = ImageProcessing.fixProfile2(profile);
+	
+//		profile = ImageProcessing.fixProfile(profile);
 //		double[] cosines = FFT.cosineValues(profile);
 //		double[] sines = FFT.sineValues(profile);
+
 		double[] cosines = DFT.cosineValues(profile);
 		double[] sines = DFT.sineValues(profile);
 
@@ -328,12 +331,40 @@ public class RecordCell
 		features.add(sines[3]);
 	}
 	
+	private void MakeLowerProfileFeature()
+	{
+		// DFT.
+		int classId = 0;
+		double[] profile = ImageProcessing.getLowerProfile(image, classId);
+		
+//		profile = ImageProcessing.fixProfile(profile);
+//		double[] cosines = FFT.cosineValues(profile);
+//		double[] sines = FFT.sineValues(profile);
+
+		double[] cosines = DFT.cosineValues(profile);
+		double[] sines = DFT.sineValues(profile);
+
+		// Insert 7 features into cell.
+		features.add(cosines[0]);
+		features.add(cosines[1]);
+		features.add(cosines[2]);
+		features.add(cosines[3]);
+		
+		features.add(sines[1]);
+		features.add(sines[2]);
+		features.add(sines[3]);
+	}
 	
 	private void MakeProjectionProfileFeature()
 	{
 		// DFT.
 		int classId = 0;
 		double[] profile = ImageProcessing.getXProfile(image, classId);
+		
+//		profile = ImageProcessing.fixProfile(profile);
+//		double[] cosines = FFT.cosineValues(profile);
+//		double[] sines = FFT.sineValues(profile);
+		
 		double[] cosines = DFT.cosineValues(profile);
 		double[] sines = DFT.sineValues(profile);
 

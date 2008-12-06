@@ -37,6 +37,35 @@ public class ImageProcessing {
 					
 					if (pixels[i][j] == classId) {
 						profile[bucket] = length;
+						break;
+					}
+					else
+					{
+						length++;
+					}
+				}
+			}
+
+		return profile;
+		
+	}
+	
+	public static double[] getLowerProfile(GrayImage image, int classId) {
+		
+		BoundingBox boundingBox = PatternRecognition.getBoundingBox(image, classId);
+		short[][] pixels = image.getData();
+		int lengthOfProfile = boundingBox.maxX - boundingBox.minX;
+
+		double profile[] = new double[lengthOfProfile + 1];
+
+	
+			for (int j = boundingBox.minX, bucket = 0; j < boundingBox.maxX + 1; j++,bucket++) {
+				int length = 0;
+				for (int i = boundingBox.maxY; i > boundingBox.minY; i--) {
+					
+					if (pixels[i][j] == classId) {
+						profile[bucket] = length;
+						break;
 					}
 					else
 					{
