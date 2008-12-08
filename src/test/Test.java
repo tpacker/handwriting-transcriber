@@ -12,12 +12,12 @@ public class Test {
 		
 //		System.out.println("hello world");
 //		Test.ReadInFile();
-//		Test.PlotProjectionProfile();
+		Test.PlotProjectionProfile();
 //		Test.DFTProfile();
 //		Test.PlotUpperWordProfile();
 //		Test.DFT();
 //		Test.BoundingFeatures();
-//		Test.PlotUpperWordProfile();
+		Test.PlotUpperWordProfile();
 		Test.PlotLowerWordProfile();
 	}
 	public static void BoundingFeatures() {
@@ -108,7 +108,7 @@ public class Test {
 	}
 	
 	public static void PlotLowerWordProfile() {
-		GrayImage image = ImageProcessing.readPgmImage("./Test/images/circle.pgm");
+		GrayImage image = ImageProcessing.readPgmImage("./Test/images/wife.pgm");
 		ImageProcessing.displayImage(image, "file");
 		Plot chart = new Plot();
 		int classId = 0;
