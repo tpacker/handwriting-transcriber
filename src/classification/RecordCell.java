@@ -142,7 +142,7 @@ public class RecordCell
 		
 		MakeUpperProfileFeature();
 		MakeProjectionProfileFeature();
-//		MakeLowerProfileFeature();
+		MakeLowerProfileFeature();
 	}
 	
 	
