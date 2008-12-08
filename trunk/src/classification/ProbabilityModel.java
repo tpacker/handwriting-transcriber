@@ -355,26 +355,21 @@ public class ProbabilityModel
 	}
 	
 	
-	/*public void bruteClassify(RecordRow row)
+	public void bruteClassify(RecordRow row)
 	{
 		for (int cellPos = 0; cellPos < columnCount; cellPos++)
 		{
 			RecordCell cell = row.getCells().get(cellPos);
 			int statePos = cellStateOrder[cellPos];
 			
-			// Temp:
-			//cell.setPredictionProbability(999999999);
-			
 			for (String stateValue : stateValues.get(statePos).keySet())
 			{
 				double observationProbability = observationProbability(statePos, stateValue, cell.getFeatures());
 				cell.setPredictions(cell.getPredictions() + stateValue + " " + observationProbability + "\n");
 				
-				if (observationProbability > cell.getPredictionProbability())
-				// Temp:
-				//if (observationProbability < cell.getPredictionProbability())
+				if (observationProbability > cell.getPredictedObservationProbability())
 				{
-					cell.setPredictionProbability(observationProbability);
+					cell.setPredictedObservationProbability(observationProbability);
 					cell.setPredictedTranscription(stateValue);
 				}
 			}
@@ -383,7 +378,7 @@ public class ProbabilityModel
 		}
 		
 //		public double transitionProbability(int stateIndex, String stateValue1, String stateValue2)
-	}*/
+	}
 	
 	
 	/**
@@ -410,7 +405,7 @@ public class ProbabilityModel
 		{
 			int valueIndex1 = stateValues.get(stateIndex - 1).get(stateValue1);
 			int valueIndex2 = stateValues.get(stateIndex).get(stateValue2);
-			probability = (((double)stateTransitionStats.get(stateIndex-1)[valueIndex1][valueIndex2]) + smoothingConstant) / ((double)stateTransitionNormalizers.get(stateIndex-1)); 
+			probability = (((double)stateTransitionStats.get(stateIndex - 1)[valueIndex1][valueIndex2]) + smoothingConstant) / ((double)stateTransitionNormalizers.get(stateIndex - 1)); 
 		}
 		
 		return probability;
