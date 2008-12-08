@@ -1,0 +1,69 @@
+% This file was created with JabRef 2.4.
+% Encoding: Cp1252
+
+@ARTICLE{Alpher02,
+  author = {A. Alpher},
+  title = {Frobnication},
+  journal = {Journal of Foo},
+  year = {2002},
+  volume = {12},
+  pages = {234--778},
+  number = {1}
+}
+
+@ARTICLE{Alpher03,
+  author = {A. Alpher and and J.~P.~N. Fotheringham-Smythe},
+  title = {Frobnication revisited},
+  journal = {Journal of Foo},
+  year = {2003},
+  volume = {13},
+  pages = {234--778},
+  number = {1}
+}
+
+@ARTICLE{Alpher04,
+  author = {A. Alpher and and J.~P.~N. Fotheringham-Smythe and G. Gamow},
+  title = {Can a machine frobnicate?},
+  journal = {Journal of Foo},
+  year = {2004},
+  volume = {14},
+  pages = {234--778},
+  number = {1}
+}
+
+@MISC{Authors06,
+  author = {Authors},
+  title = {The frobnicatable foo filter},
+  year = {2006},
+  note = {ECCV06 submission ID 324. Supplied as additional material {\tt eccv06.pdf}}
+}
+
+@MISC{Authors06b,
+  author = {Authors},
+  title = {Frobnication tutorial},
+  year = {2006},
+  note = {Supplied as additional material {\tt tr.pdf}}
+}
+
+@ARTICLE{kittler89,
+  author = {Cho, S. and Haralick, R.M. and Yi, S.},
+  title = {Improvement of Kittler and Illingworth's Minimum Error Thresholding},
+  journal = PR,
+  year = {1989},
+  volume = {22},
+  pages = {609-617},
+  number = {5},
+  bibsource = {http://www.visionbib.com/bibliography/segment342.html#TT25202}
+}
+
+@ARTICLE{,
+  author = {Otsu, N.},
+  title = {A threshold selection method from gray-level fistograms},
+  journal = {IEEE Trans. Sys. Man.},
+  year = {1979},
+  volume = {9},
+  pages = {62-66},
+  owner = {onina},
+  timestamp = {2008.09.29}
+}
+
