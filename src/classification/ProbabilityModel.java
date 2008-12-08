@@ -373,8 +373,6 @@ public class ProbabilityModel
 					cell.setPredictedTranscription(stateValue);
 				}
 			}
-			
-			int x = 0;
 		}
 		
 //		public double transitionProbability(int stateIndex, String stateValue1, String stateValue2)
@@ -396,16 +394,17 @@ public class ProbabilityModel
 	{
 		double probability = 0.0;
 		
+		int valueIndex = stateValues.get(stateIndex).get(stateValue2);
 		if (stateIndex == 0)
 		{
-			int valueIndex = stateValues.get(stateIndex).get(stateValue2);
 			probability = (stateStats.get(stateIndex)[valueIndex] + smoothingConstant) / stateNormalizers.get(stateIndex); 
 		}
 		else
 		{
 			int valueIndex1 = stateValues.get(stateIndex - 1).get(stateValue1);
 			int valueIndex2 = stateValues.get(stateIndex).get(stateValue2);
-			probability = (((double)stateTransitionStats.get(stateIndex - 1)[valueIndex1][valueIndex2]) + smoothingConstant) / ((double)stateTransitionNormalizers.get(stateIndex - 1)); 
+			//probability = (((double)stateTransitionStats.get(stateIndex - 1)[valueIndex1][valueIndex2]) + smoothingConstant) / (double)stateTransitionNormalizers.get(stateIndex - 1); 
+			probability = (((double)stateTransitionStats.get(stateIndex - 1)[valueIndex1][valueIndex2]) + smoothingConstant) / (double)stateStats.get(stateIndex - 1)[valueIndex1]; 
 		}
 		
 		return probability;
