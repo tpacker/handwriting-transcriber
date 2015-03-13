@@ -1,0 +1,1 @@
+This project is targeted to help people who read document images in order to index them.
